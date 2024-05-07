@@ -1,42 +1,13 @@
-//create web server
-var http = require('http');
-var fs = require('fs');
-var url = require('url');
-var querystring = require('querystring');
-var comments = [];
+//Create web server
+var express = require('express');
+var app = express();
 
-var server = http.createServer(function(req, res){
-    //parse url
-    var parseUrl = url.parse(req.url);
-    var path = parseUrl.pathname;
-    //parse query
-    var query = querystring.parse(parseUrl.query);
-    if(path === '/'){
-        fs.readFile('./index.html', function(err, data){
-            if(err){
-                res.end('404 Not Found');
-            }else{
-                res.end(data);
-            }
-        });
-    }else if(path === '/post'){
-        fs.readFile('./post.html', function(err, data){
-            if(err){
-                res.end('404 Not Found');
-            }else{
-                res.end(data);
-            }
-        });
-    }else if(path === '/comment'){
-        comments.push(query);
-        res.end('success');
-    }else if(path === '/getComments'){
-        res.end(JSON.stringify(comments));
-    }else{
-        res.end('404 Not Found');
-    }
+//Create a route
+app.get('/comments', function(req, res) {
+    res.send('This is the comments page');
 });
 
-server.listen(3000, function(){
-    console.log('server is running');
+//Start the server
+app.listen(3000, function() {
+    console.log('Server is running on http://localhost:3000');
 });
